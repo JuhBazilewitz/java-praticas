@@ -2,6 +2,7 @@ package br.com.catalogo.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -60,11 +61,17 @@ public class LoginServlet extends HttpServlet{
             //Usar o Dispatcher para o JSP
             
             request.setAttribute("usuarioNaoAutenticado", usuario);
+            
+            ArrayList<String> motivos = new ArrayList<>();
+            motivos.add("Esqueci a minha senha.");
+            motivos.add("Esqueci meu usuário.");
+            motivos.add("Estava de férias.");
+            
+            request.setAttribute("motivos", motivos);
+            
             RequestDispatcher view = request.getRequestDispatcher("acessoNegado.jsp");
             
             view.forward(request, response);
-            
-            
             
             //Fazer o redirect direto pelo JSP
             //response.sendRedirect("acessoNegado.jsp");
