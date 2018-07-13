@@ -3,6 +3,8 @@ package br.com.catalogo.servlet;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -40,18 +42,33 @@ public class LoginServlet extends HttpServlet{
     }
     
     @Override
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String usuario = request.getParameter("usuario");
         String senha = request.getParameter("senha");
         
         if(usuario.equals("ze") && senha.equals("123")) {
             //Mandar ele para outro servlet
+            request.getSession().setAttribute("usuario", usuario);
             response.sendRedirect("home");
         } else {
+            // Indicar a rota mapeada do servlet
+            /*
             //Manter ele no mesmo servlet
             response.sendRedirect("login");
+            */
+            
+            //Usar o Dispatcher para o JSP
+            
+            request.setAttribute("usuarioNaoAutenticado", usuario);
+            RequestDispatcher view = request.getRequestDispatcher("acessoNegado.jsp");
+            
+            view.forward(request, response);
+            
+            
+            
+            //Fazer o redirect direto pelo JSP
+            //response.sendRedirect("acessoNegado.jsp");
         }
         
-        request.getSession().setAttribute("usuarioLogado", usuario);
     }
 }
